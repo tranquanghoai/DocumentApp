@@ -3,15 +3,18 @@ import { View, Text, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'r
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Foundation from 'react-native-vector-icons/Foundation';
 import { useSelector, useDispatch } from "react-redux";
-import { closeModalAddDocument } from '../../store/action/system'
+import { closeModalAddDocument, openModalCreateFolder } from '../../store/action/system'
 const CreateNewDoc = (props) => {
+    const { name, onHandlePress } = props
     return (
         <View style={{
             flex: 1,
             justifyContent: "center",
             alignItems: "center"
         }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={
+                () => onHandlePress()
+            }>
                 <View style={{
                     borderRadius: 30,
                     borderWidth: 1,
@@ -24,7 +27,7 @@ const CreateNewDoc = (props) => {
                 }}>
                     {props.children}
                 </View>
-                <Text>{props.name}</Text>
+                <Text>{name}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -33,7 +36,10 @@ const CreateNewDoc = (props) => {
 export default ModalAddDocument = () => {
     const { isOpenModalAddDocument } = useSelector(state => state.system);
     const dispatch = useDispatch()
-
+    const onHandleOpenCreateFolder = () => {
+        dispatch(openModalCreateFolder())
+        dispatch(closeModalAddDocument())
+    }
     return (
         <Modal
             animationType="slide"
@@ -84,7 +90,7 @@ export default ModalAddDocument = () => {
                             flex: 1,
                             flexDirection: "row"
                         }}>
-                            <CreateNewDoc name="Folder">
+                            <CreateNewDoc name="Folder" onHandlePress={onHandleOpenCreateFolder}>
                                 <AntDesign name="folder1" color="#f57811" size={20} />
                             </CreateNewDoc>
                             <CreateNewDoc name="Văn Bản">

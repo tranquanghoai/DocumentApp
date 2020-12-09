@@ -14,8 +14,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import Home from '../screens/Home'
 import Setting from '../screens/Setting'
 import Shared from '../screens/Shared'
-import File from '../screens/File'
-import FileList from '../screens/FileList'
+import Document from '../screens/Document'
+import DocumentList from '../screens/DocumentList'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -26,10 +26,20 @@ function HomeStackTab() {
     return (
         <HomeStack.Navigator>
             <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-            <HomeStack.Screen name="FileList" component={FileList} options={{ headerShown: false }} />
+            <HomeStack.Screen name="DocumentList" component={DocumentList} options={{ headerShown: false }} />
         </HomeStack.Navigator>
     );
 }
+
+function DocumentStackTab() {
+    return (
+        <HomeStack.Navigator>
+            <HomeStack.Screen name="Document" component={Document} options={{ headerShown: false }} />
+            <HomeStack.Screen name="DocumentList" component={DocumentList} options={{ headerShown: false }} />
+        </HomeStack.Navigator>
+    );
+}
+
 const TabNavigation = () => {
     return (
         <Tab.Navigator
@@ -70,8 +80,8 @@ const TabNavigation = () => {
                 style: { height: 55, padding: 4 }
             }}
         >
+            <Tab.Screen name="Tài liệu" component={DocumentStackTab} />
             <Tab.Screen name="Trang Chủ" component={HomeStackTab} />
-            <Tab.Screen name="Tệp Tin" component={File} />
             <Tab.Screen name="Chia Sẽ" component={Shared} />
             <Tab.Screen name="Cá Nhân" component={Setting} />
         </Tab.Navigator >

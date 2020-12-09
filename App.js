@@ -21,6 +21,8 @@ import {
 } from 'react-native';
 import { Provider } from 'react-redux';
 
+import ModalCreateFolder from './components/modal/ModalCreateFolder'
+
 import store from './store'
 
 // import {
@@ -35,6 +37,8 @@ const Drawer = createDrawerNavigator()
 
 import TabNavigation from './navigation/TabNavigation'
 import DrawerNavigation from './navigation/DrawerNavigation'
+import ButtonAddDocument from './components/button/ButtonAddDocument'
+import ModalAddDocument from './components/modal/ModalAddDocument'
 
 const App = () => {
   return (
@@ -43,6 +47,9 @@ const App = () => {
         <Drawer.Navigator drawerContent={props => <DrawerNavigation {...props} />}>
           <Drawer.Screen name="TabNavigation" component={TabNavigation} />
         </Drawer.Navigator>
+        <ModalCreateFolder />
+        <ButtonAddDocument />
+        <ModalAddDocument />
       </NavigationContainer>
     </Provider>
   );

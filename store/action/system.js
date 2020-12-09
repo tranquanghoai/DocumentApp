@@ -1,4 +1,4 @@
-import * as types from './types'
+import * as types from './types/system'
 
 export const openModalAddDocument = () => {
     return (dispatch) => {
@@ -47,3 +47,20 @@ export const closeModalFolderAction = () => {
         })
     }
 }
+
+export const openModalCreateFolder = () => {
+    return (dispatch) => {
+        dispatch({
+            type: types.OPEN_MODAL_CREATE_FOLDER
+        })
+    }
+}
+
+export const closeModalCreateFolder = () => {
+    return (dispatch) => {
+        dispatch({
+            type: types.CLOSE_MODAL_CREATE_FOLDER
+        })
+    }
+}
+

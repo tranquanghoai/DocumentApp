@@ -14,7 +14,7 @@ export default function ButtonAddDocument() {
                 height: 60,
                 position: 'absolute',
                 right: 20,
-                bottom: 20,
+                bottom: 60,
                 borderRadius: 30,
                 elevation: 2,
                 shadowColor: '#000',
