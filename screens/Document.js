@@ -8,23 +8,39 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import FolderHorizontal from '../components/folder/FolderHorizontal'
 import FolderVertical from '../components/folder/FolderVertical'
 import HomeHeader from '../components/header/HomeHeader'
-import { getListFolder } from '../store/action/folder'
+import { getListFolder, chooseParentFolder } from '../store/action/folder'
 
 export default Document = ({ navigation }) => {
     const [folderIsHorizontal, setFolderHorizontal] = useState(false)
     const dispatch = useDispatch()
     const folders = useSelector(state => state.folder.folders)
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const filterFolder = {}
-                dispatch(getListFolder(filterFolder))
-            } catch (error) {
-                console.log(error, 'error')
-            }
+    const parentFolder = useSelector(state => state.folder.parentFolder)
+
+    const fetchData = () => {
+        try {
+            const filterFolder = {}
+            dispatch(getListFolder(filterFolder))
+        } catch (error) {
+            console.log(error, 'error')
         }
-        fetchData()
+    }
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchData()
+            dispatch(chooseParentFolder(""))
+        });
+        return unsubscribe;
     }, [navigation])
+
+    // useEffect(() => {
+    //     fetchData()
+    // }, [])
+
+    useEffect(() => {
+        if (!parentFolder) {
+            fetchData()
+        }
+    }, [parentFolder])
     return (
         <View style={{
             flex: 1

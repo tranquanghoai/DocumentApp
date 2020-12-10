@@ -2,7 +2,7 @@ import * as types from '../action/types/folder';
 
 const initialState = {
     folders: [],
-    currentFolderIdId: ''
+    parentFolder: null
 }
 
 export default folder = (state = initialState, action) => {
@@ -13,8 +13,8 @@ export default folder = (state = initialState, action) => {
         case types.PUSH_CREATED_FOLDER:
             const { folder } = action
             return { ...state, folders: [...state.folders, folder] }
-        case types.CHOOSE_CURRENT_FOLDER:
-            return { ...state, currentFolderIdId: action.currentFolderIdId }
+        case types.CHOOSE_PARENT_FOLDER:
+            return { ...state, parentFolder: action.parentFolder }
         default:
             return state;
     }

@@ -13,35 +13,33 @@ import FolderVertical from '../components/folder/FolderVertical';
 import FolderHorizontal from '../components/folder/FolderHorizontal';
 import FileHorizontal from '../components/file/FileHorizontal';
 import FileVertical from '../components/file/FileVertical';
-import { getListFolder } from '../store/action/folder'
+import { getListFolder, chooseParentFolder } from '../store/action/folder'
 
 export default DocumentList = ({ navigation, route }) => {
     const [folderIsHorizontal, setFolderHorizontal] = useState(false)
-    console.log(route, 'route')
     const dispatch = useDispatch()
     const folders = useSelector(state => state.folder.folders)
-    const currentFolderId = useSelector(state => state.folder.currentFolderId)
-    useEffect(() => {
-        async function getFolderDetailById() {
-            try {
-                dispatch(getListFolder(filterFolder))
-            } catch (error) {
-                console.log(error, 'error')
-            }
+    const parentFolder = useSelector(state => state.folder.parentFolder)
+    const fetchDocumentOfParentId = async () => {
+        try {
+            const filterFolder = {}
+            dispatch(getListFolder(filterFolder))
+        } catch (error) {
+            console.log(error, 'error')
         }
-        getFolderDetailById()
-    }, [currentFolderId])
+    }
+
     useEffect(() => {
-        async function fetchCurrentFolderId() {
-            try {
-                const filterFolder = {}
-                dispatch(getListFolder(filterFolder))
-            } catch (error) {
-                console.log(error, 'error')
+        const unsubscribe = navigation.addListener('focus', async () => {
+            if (route.params?.parentFolderId) {
+                await dispatch(chooseParentFolder(route.params.parentFolderId))
+                fetchDocumentOfParentId()
             }
-        }
-        fetchCurrentFolderId()
-    }, [route])
+        });
+
+        return unsubscribe;
+    }, [navigation]);
+
     return (
         <View style={{
             flex: 1
@@ -51,7 +49,7 @@ export default DocumentList = ({ navigation, route }) => {
                     backgroundColor: '#fff',
                 }}>
                     <Left>
-                        <TouchableOpacity transparent onPress={() => navigation.goBack()}>
+                        <TouchableOpacity transparent onPress={() => navigation.pop()}>
                             <Feather name="arrow-left" color="#000" size={25} />
                         </TouchableOpacity>
                     </Left>
@@ -60,7 +58,7 @@ export default DocumentList = ({ navigation, route }) => {
                     }}>
                         <Title style={{
                             color: '#000'
-                        }}>Bóng đá xin chao viet nam</Title>
+                        }}>{parentFolder?.name ? parentFolder.name : ''}</Title>
                     </Body>
                     <Right>
                         <Button transparent>

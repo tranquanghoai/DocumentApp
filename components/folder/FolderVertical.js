@@ -6,16 +6,15 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FactoryService from '../../service/FactoryService'
 import { useSelector, useDispatch } from "react-redux";
-import { getListFolder, choosecurrentFolderId } from '../../store/action/folder'
+import { getListFolder, chooseParentFolder } from '../../store/action/folder'
 
 export default function FolderVertical({ navigation, folder }) {
     const dispatch = useDispatch()
 
     const onPressFolder = () => {
         navigation.push('DocumentList', {
-            currentFolderIdId: folder.id
+            parentFolderId: folder.id
         })
-        dispatch(choosecurrentFolderId(folder.id))
     }
     return (
         <TouchableHighlight
@@ -77,7 +76,7 @@ export default function FolderVertical({ navigation, folder }) {
                             <FontAwesome name="file-o" color="#fa9643" size={15} />
                             <Text style={{
                                 marginLeft: 8
-                            }}>{folder.childrenIds.length}</Text>
+                            }}>{folder.documentIds.length}</Text>
                         </View>
                         <View style={{
                             flexDirection: 'row',

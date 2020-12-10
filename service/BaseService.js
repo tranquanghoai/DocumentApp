@@ -16,13 +16,12 @@ export default class BaseService {
             // if (user) {
             // }
 
-            config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiJlZDY0Zjc5NC1iNjk1LTQ2NmMtOGZhYi02MDhlNTgzYzdjOWYiLCJpYXQiOjE2MDc1MDIyNDgsImV4cCI6MTYxMDA5NDI0OH0.Srb3qoP1R4m3VuWYgQoZx_8KEXZ9gMmCU2TWD6SH2M4`
+            config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiI0NTYxZTFjZS0wYmZlLTQyNTAtODQwMy05NzFkY2E4NzU1ZjEiLCJpYXQiOjE2MDc1Nzk1NzIsImV4cCI6MTYxMDE3MTU3Mn0.yNfFyelqqzbzs5a86qK4CAc1U2h_NFgoMmJI-OLSpcY`
             return config
         })
     }
 
     async get(uri, params = {}) {
-        console.log(domain + uri, 'domain + uri')
         try {
             return await axios.get(domain + uri, { params: params })
         } catch (e) {

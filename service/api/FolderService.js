@@ -30,8 +30,8 @@ export default class FolderService extends BaseService {
 		return res.data
 	}
 
-	async show(id, params = {}) {
-		const res = await this.get(`/api/v1/users/${id}`, params)
+	async getById(id) {
+		const res = await this.get(`${this.slug}${id}`)
 		return res.data
 	}
 
