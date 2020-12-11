@@ -3,10 +3,12 @@ import ReduxThunk from 'redux-thunk'
 
 import system from './reducer/system'
 import folder from './reducer/folder'
+import file from './reducer/file'
 
 const rootReducer = combineReducers({
     system,
-    folder
+    folder,
+    file
 })
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

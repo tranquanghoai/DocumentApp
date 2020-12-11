@@ -64,3 +64,18 @@ export const closeModalCreateFolder = () => {
     }
 }
 
+export const openModalAddFileInfo = () => {
+    return (dispatch) => {
+        dispatch({
+            type: types.OPEN_MODAL_ADD_FILE_INFO
+        })
+    }
+}
+
+export const closeModalAddFileInfo = () => {
+    return (dispatch) => {
+        dispatch({
+            type: types.CLOSE_MODAL_ADD_FILE_INFO
+        })
+    }
+}

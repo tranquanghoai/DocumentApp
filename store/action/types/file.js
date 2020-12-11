@@ -1,0 +1,2 @@
+export const SET_LIST_FILE = 'SET_LIST_FILE'
+export const PUSH_CREATED_FILE = 'PUSH_CREATED_FILE'

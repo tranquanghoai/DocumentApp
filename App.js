@@ -9,6 +9,7 @@
 import React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   SafeAreaView,
@@ -22,7 +23,7 @@ import {
 import { Provider } from 'react-redux';
 
 import ModalCreateFolder from './components/modal/ModalCreateFolder'
-
+import TextFile from './screens/TextFile'
 import store from './store'
 
 // import {
@@ -35,21 +36,36 @@ import store from './store'
 
 const Drawer = createDrawerNavigator()
 
-import TabNavigation from './navigation/TabNavigation'
+import TabNavigator from './navigation/TabNavigator'
 import DrawerNavigation from './navigation/DrawerNavigation'
 import ButtonAddDocument from './components/button/ButtonAddDocument'
 import ModalAddDocument from './components/modal/ModalAddDocument'
 
-const App = () => {
+const StackHome = createStackNavigator();
+const StackHomeNavigator = () => {
+  return (
+    <StackHome.Navigator
+      initialRouteName={'Home'}
+      headerMode={'none'}
+    >
+      <StackHome.Screen name="Home" component={TabNavigator} />
+      <StackHome.Screen name="TextFile" component={TextFile} />
+    </StackHome.Navigator>
+  )
+}
+
+const App = ({ navigation }) => {
+  console.log(navigation, 'navigation')
   return (
     <Provider store={store}>
       <NavigationContainer>
         <Drawer.Navigator drawerContent={props => <DrawerNavigation {...props} />}>
-          <Drawer.Screen name="TabNavigation" component={TabNavigation} />
+          <Drawer.Screen name="StackHomeNavigator" component={StackHomeNavigator} />
         </Drawer.Navigator>
-        <ModalCreateFolder />
+        {/* <StackHomeNavigator /> */}
+        {/* <ModalCreateFolder />
         <ButtonAddDocument />
-        <ModalAddDocument />
+        <ModalAddDocument navigation={navigation} /> */}
       </NavigationContainer>
     </Provider>
   );

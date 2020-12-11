@@ -16,7 +16,7 @@ export default class BaseService {
             // if (user) {
             // }
 
-            config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiI0NTYxZTFjZS0wYmZlLTQyNTAtODQwMy05NzFkY2E4NzU1ZjEiLCJpYXQiOjE2MDc1Nzk1NzIsImV4cCI6MTYxMDE3MTU3Mn0.yNfFyelqqzbzs5a86qK4CAc1U2h_NFgoMmJI-OLSpcY`
+            config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiJiYTljNmUwOC02NDIwLTQxOTYtOGFkNS1jNGZmNDMwNTg1MjAiLCJpYXQiOjE2MDc2NzcxMjksImV4cCI6MTYxMDI2OTEyOX0.7h-DqW_0vi7Rs_L_WPaNPmpaiS2Xq2vaR91xzz2Nli0`
             return config
         })
     }

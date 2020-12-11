@@ -33,12 +33,18 @@ const CreateNewDoc = (props) => {
     )
 }
 
-export default ModalAddDocument = () => {
+export default ModalAddDocument = ({ navigation }) => {
     const { isOpenModalAddDocument } = useSelector(state => state.system);
     const dispatch = useDispatch()
+
     const onHandleOpenCreateFolder = () => {
         dispatch(openModalCreateFolder())
         dispatch(closeModalAddDocument())
+    }
+
+    const onHandleCreateTextFile = () => {
+        dispatch(closeModalAddDocument())
+        navigation.navigate('TextFile')
     }
     return (
         <Modal
@@ -93,7 +99,7 @@ export default ModalAddDocument = () => {
                             <CreateNewDoc name="Folder" onHandlePress={onHandleOpenCreateFolder}>
                                 <AntDesign name="folder1" color="#f57811" size={20} />
                             </CreateNewDoc>
-                            <CreateNewDoc name="Văn Bản">
+                            <CreateNewDoc name="Văn Bản" onHandlePress={onHandleCreateTextFile}>
                                 <AntDesign name="filetext1" color="#f57811" size={20} />
                             </CreateNewDoc>
                             <CreateNewDoc name="Hình Ảnh">

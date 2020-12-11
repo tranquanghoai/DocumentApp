@@ -4,7 +4,8 @@ const initialState = {
     isOpenModalAddDocument: false,
     isOpenModalFileAction: false,
     isOpenModalFolderAction: false,
-    isOpenModalCreateFolder: false
+    isOpenModalCreateFolder: false,
+    isOpenModalAddFileInfo: false
 }
 
 export default system = (state = initialState, action) => {
@@ -28,6 +29,11 @@ export default system = (state = initialState, action) => {
             return { ...state, isOpenModalCreateFolder: true }
         case types.CLOSE_MODAL_CREATE_FOLDER:
             return { ...state, isOpenModalCreateFolder: false }
+
+        case types.OPEN_MODAL_ADD_FILE_INFO:
+            return { ...state, isOpenModalAddFileInfo: true }
+        case types.CLOSE_MODAL_ADD_FILE_INFO:
+            return { ...state, isOpenModalAddFileInfo: false }
 
         default:
             return state;
