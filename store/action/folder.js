@@ -1,5 +1,6 @@
 import * as types from './types/folder'
 import FactoryService from '../../service/FactoryService'
+import { setListFile } from './file'
 
 export const setListFolder = (folders) => {
     return (dispatch) => {
@@ -20,12 +21,8 @@ const pushCreatedFolder = (folder) => {
 }
 
 export const getFolderById = async (folderId) => {
-    try {
-        const response = await FactoryService.request('FolderService').getById(folderId)
-        return response.data
-    } catch (error) {
-
-    }
+    const response = await FactoryService.request('FolderService').getById(folderId)
+    return response.data
 }
 
 export const chooseParentFolder = (parentFolderId) => {
@@ -34,11 +31,17 @@ export const chooseParentFolder = (parentFolderId) => {
             let parentFolder = null
             if (parentFolderId) {
                 parentFolder = await getFolderById(parentFolderId)
+                console.log(parentFolder, 'parentFolder')
+                const folders = parentFolder.childrenIds
+                const files = parentFolder.fileIds
+                dispatch(setListFolder(folders))
+                dispatch(setListFile(files))
             }
             dispatch({
                 type: types.CHOOSE_PARENT_FOLDER,
                 parentFolder
             })
+
         } catch (error) {
             console.log(error, 'error')
         }

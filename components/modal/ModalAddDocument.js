@@ -46,6 +46,11 @@ export default ModalAddDocument = ({ navigation }) => {
         dispatch(closeModalAddDocument())
         navigation.navigate('TextFile')
     }
+
+    const onHandleCreateImageFile = () => {
+        dispatch(closeModalAddDocument())
+        navigation.navigate('ImageFile')
+    }
     return (
         <Modal
             animationType="slide"
@@ -102,7 +107,7 @@ export default ModalAddDocument = ({ navigation }) => {
                             <CreateNewDoc name="Văn Bản" onHandlePress={onHandleCreateTextFile}>
                                 <AntDesign name="filetext1" color="#f57811" size={20} />
                             </CreateNewDoc>
-                            <CreateNewDoc name="Hình Ảnh">
+                            <CreateNewDoc name="Hình Ảnh" onHandlePress={onHandleCreateImageFile}>
                                 <Foundation name="photo" color="#f57811" size={20} />
                             </CreateNewDoc>
                             <CreateNewDoc name="Tệp Tin">

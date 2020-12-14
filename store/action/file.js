@@ -1,14 +1,15 @@
 import * as types from './types/file'
 import FactoryService from '../../service/FactoryService'
+import RNFetchBlob from 'rn-fetch-blob';
 
-// export const setListFolder = (folders) => {
-//     return (dispatch) => {
-//         dispatch({
-//             type: types.SET_LIST_FOLDER,
-//             folders
-//         })
-//     }
-// }
+export const setListFile = (files) => {
+    return (dispatch) => {
+        dispatch({
+            type: types.SET_LIST_FILE,
+            files
+        })
+    }
+}
 
 const pushCreatedFile = (file) => {
     return (dispatch) => {
@@ -20,7 +21,6 @@ const pushCreatedFile = (file) => {
 }
 
 export const handleCreateTextFile = (name, description, content) => {
-    console.log('Vo day k')
     return async (dispatch, getState) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -32,11 +32,38 @@ export const handleCreateTextFile = (name, description, content) => {
                     folderId: parentFolder ? parentFolder.id : ''
                 }
                 const response = await FactoryService.request('FileService').createTextFile(file)
+                console.log(response, 'response')
                 const createdFile = response.data
                 dispatch(pushCreatedFile(createdFile))
                 resolve(true)
             } catch (error) {
                 console.log(error, 'error')
+                reject(false)
+            }
+        })
+    }
+}
+
+export const handleCreateImageFile = (name, description, images) => {
+    return async (dispatch, getState) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const parentFolder = getState().folder.parentFolder
+                let data = [
+                    { name: 'name', data: name },
+                    { name: 'description', data: description },
+                    { name: 'folderId', data: parentFolder ? parentFolder.id : '' }
+                ]
+                for (let image of images) {
+                    const fileName = image.path.split('/')[image.path.split('/').length - 1]
+                    data.push({ name: 'images', filename: fileName, type: image.mime, data: RNFetchBlob.wrap(image.path) })
+                }
+                const response = await FactoryService.request('FileService').createImageFile(data)
+                const createdFile = response.data
+                dispatch(pushCreatedFile(createdFile))
+                resolve(true)
+            } catch (error) {
+                console.log(error, 'error hoai')
                 reject(false)
             }
         })

@@ -33,6 +33,7 @@ export default class FolderService extends BaseService {
 	async getById(id) {
 		const res = await this.get(`${this.slug}${id}`)
 		return res.data
+
 	}
 
 	async destroy(id) {

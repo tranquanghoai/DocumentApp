@@ -26,6 +26,15 @@ export default class FileService extends BaseService {
 		}
 	}
 
+	async createImageFile(data = []) {
+		const res = await this.fetchBlob({
+			method: 'POST',
+			url: this.slug + `/create-image`,
+			data
+		})
+		return res
+	}
+
 	async create(folder = {}) {
 		try {
 			const res = await this.post(this.slug + `create`, folder)

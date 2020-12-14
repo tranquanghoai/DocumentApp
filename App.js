@@ -24,15 +24,9 @@ import { Provider } from 'react-redux';
 
 import ModalCreateFolder from './components/modal/ModalCreateFolder'
 import TextFile from './screens/TextFile'
+import ImageFile from './screens/ImageFile'
+
 import store from './store'
-
-// import {
-//   Colors,
-// } from 'react-native/Libraries/NewAppScreen';
-
-// import Login from './screens/Login'
-// import Home from './screens/Home'
-// import OTP from './screens/OTP'
 
 const Drawer = createDrawerNavigator()
 
@@ -50,6 +44,7 @@ const StackHomeNavigator = () => {
     >
       <StackHome.Screen name="Home" component={TabNavigator} />
       <StackHome.Screen name="TextFile" component={TextFile} />
+      <StackHome.Screen name="ImageFile" component={ImageFile} />
     </StackHome.Navigator>
   )
 }

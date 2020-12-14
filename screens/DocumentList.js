@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import FolderVertical from '../components/folder/FolderVertical';
 import FolderHorizontal from '../components/folder/FolderHorizontal';
-import FileHorizontal from '../components/file/FileHorizontal';
+// import FileHorizontal from '../components/file/FileHorizontal';
 import FileVertical from '../components/file/FileVertical';
 import { getListFolder, chooseParentFolder } from '../store/action/folder'
 
@@ -19,6 +19,7 @@ export default DocumentList = ({ navigation, route }) => {
     const [folderIsHorizontal, setFolderHorizontal] = useState(false)
     const dispatch = useDispatch()
     const folders = useSelector(state => state.folder.folders)
+    const files = useSelector(state => state.file.files)
     const parentFolder = useSelector(state => state.folder.parentFolder)
     const fetchDocumentOfParentId = async () => {
         try {
@@ -33,7 +34,6 @@ export default DocumentList = ({ navigation, route }) => {
         const unsubscribe = navigation.addListener('focus', async () => {
             if (route.params?.parentFolderId) {
                 await dispatch(chooseParentFolder(route.params.parentFolderId))
-                fetchDocumentOfParentId()
             }
         });
 
@@ -93,6 +93,14 @@ export default DocumentList = ({ navigation, route }) => {
                                     </React.Fragment>
                                 )
                         }
+                        <React.Fragment>
+                            {
+                                files.map(file => (
+                                    <FileVertical navigation={navigation} key={file.id} file={file} />
+                                ))
+                            }
+                        </React.Fragment>
+
 
                     </View>
                 </ScrollView>

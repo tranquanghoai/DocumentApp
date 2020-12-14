@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const domain = 'http://192.168.1.11:3000/'
-
+import RNFetchBlob from 'rn-fetch-blob';
 export default class BaseService {
     constructor(auth = 'employee') {
         if (auth) {
@@ -16,8 +16,26 @@ export default class BaseService {
             // if (user) {
             // }
 
-            config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiJiYTljNmUwOC02NDIwLTQxOTYtOGFkNS1jNGZmNDMwNTg1MjAiLCJpYXQiOjE2MDc2NzcxMjksImV4cCI6MTYxMDI2OTEyOX0.7h-DqW_0vi7Rs_L_WPaNPmpaiS2Xq2vaR91xzz2Nli0`
+            config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiI5NjVhMDUzNy02MWQ4LTRiMzAtYTExYS0yOTlhMzJjMWFhNGMiLCJpYXQiOjE2MDc5MTkxODMsImV4cCI6MTYxMDUxMTE4M30.s_Z52kOCqNLIKhxQotZO74YaxuzFEUfc64FK16jJtM0`
             return config
+        })
+    }
+
+    fetchBlob({ method, url, data }) {
+        return new Promise((resolve, reject) => {
+            const headers = {
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiI5NjVhMDUzNy02MWQ4LTRiMzAtYTExYS0yOTlhMzJjMWFhNGMiLCJpYXQiOjE2MDc5MTkxODMsImV4cCI6MTYxMDUxMTE4M30.s_Z52kOCqNLIKhxQotZO74YaxuzFEUfc64FK16jJtM0`
+            }
+            RNFetchBlob.fetch(method, domain + url, headers, data).then(response => {
+                const status = response.info().status
+                const data = JSON.parse(response.data)
+                if (status !== 200 && status !== 201) {
+                    reject(data)
+                }
+                resolve(data)
+            }).catch(error => {
+                reject(error)
+            })
         })
     }
 
@@ -33,6 +51,7 @@ export default class BaseService {
         try {
             return await axios.post(domain + uri, params)
         } catch (e) {
+            console.log('xuong day khong')
             return this.errorMsg(e)
         }
     }

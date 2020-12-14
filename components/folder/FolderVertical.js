@@ -32,12 +32,15 @@ export default function FolderVertical({ navigation, folder }) {
                 padding: 8,
             }}>
                 <View style={{
-                    height: '100%',
+                    height: 80,
                     width: '30%',
                     padding: 0,
-                    margin: 0
+                    margin: 0,
+                    justifyContent: "center",
+                    alignItems: "center",
+
                 }}>
-                    <FontAwesome name="folder" color="#ccc" size={100} style={{
+                    <FontAwesome name="folder" color="#ccc" size={75} style={{
                         marginVertical: -6,
                     }} />
                 </View>
@@ -76,7 +79,7 @@ export default function FolderVertical({ navigation, folder }) {
                             <FontAwesome name="file-o" color="#fa9643" size={15} />
                             <Text style={{
                                 marginLeft: 8
-                            }}>{folder.documentIds.length}</Text>
+                            }}>{folder.fileIds.length}</Text>
                         </View>
                         <View style={{
                             flexDirection: 'row',
