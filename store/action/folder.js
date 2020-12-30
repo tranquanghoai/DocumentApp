@@ -31,7 +31,6 @@ export const chooseParentFolder = (parentFolderId) => {
             let parentFolder = null
             if (parentFolderId) {
                 parentFolder = await getFolderById(parentFolderId)
-                console.log(parentFolder, 'parentFolder')
                 const folders = parentFolder.childrenIds
                 const files = parentFolder.fileIds
                 dispatch(setListFolder(folders))

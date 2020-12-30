@@ -5,7 +5,8 @@ const initialState = {
     isOpenModalFileAction: false,
     isOpenModalFolderAction: false,
     isOpenModalCreateFolder: false,
-    isOpenModalAddFileInfo: false
+    isOpenModalAddFileInfo: false,
+    // isOpenModalAddGeneralFile: false,
 }
 
 export default system = (state = initialState, action) => {
@@ -35,6 +36,10 @@ export default system = (state = initialState, action) => {
         case types.CLOSE_MODAL_ADD_FILE_INFO:
             return { ...state, isOpenModalAddFileInfo: false }
 
+        // case types.OPEN_MODAL_CREATE_FOLDER:
+        //     return { ...state, isOpenModalAddGeneralFile: true }
+        // case types.CLOSE_MODAL_ADD_GENERAL_FILE:
+        //     return { ...state, isOpenModalAddGeneralFile: false }
         default:
             return state;
     }

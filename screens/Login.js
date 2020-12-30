@@ -1,10 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native'
-import { Input } from 'react-native-elements';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
-export default function Login() {
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../store/action/auth'
+export default function Login({ navigation }) {
+    const [phoneNumber, setPhoneNumber] = useState()
+    const [password, setPassword] = useState()
+
+    const dispatch = useDispatch()
+    const onHandleLogin = () => {
+        dispatch(login(phoneNumber, password, 1)).then((result) => {
+            navigation.replace('Home')
+        }).catch((err) => {
+        });
+    }
     return (
         <View style={{
             flex: 1,
@@ -35,7 +46,7 @@ export default function Login() {
                         fontWeight: "bold",
                         color: '#f57811',
                         marginBottom: 20
-                    }}>Document System</Text>
+                    }}>Document Manager</Text>
                 </View>
 
 
@@ -69,6 +80,7 @@ export default function Login() {
                         }}
                         placeholderTextColor='#a19595'
                         placeholder='Số điện thoại'
+                        onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
                     />
                 </View>
                 <View style={{
@@ -106,6 +118,7 @@ export default function Login() {
                             }}
                             placeholderTextColor='#a19595'
                             placeholder='Mật khẩu'
+                            onChangeText={(password) => setPassword(password)}
                         />
                         <View style={{
                             // backgroundColor: 'red',
@@ -147,13 +160,15 @@ export default function Login() {
                                 alignItems: "center",
                                 flexDirection: "row"
                             }}>
-                            <View>
+                            <TouchableOpacity
+                                onPress={onHandleLogin}
+                            >
                                 <Text style={{
                                     color: '#fff',
                                     fontSize: 18,
                                     fontWeight: 'bold'
                                 }}>Đăng Nhập</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View>
                                 <AntDesign name="arrowright" color="#fff" size={25} />
                             </View>

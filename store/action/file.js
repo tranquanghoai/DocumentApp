@@ -11,6 +11,26 @@ export const setListFile = (files) => {
     }
 }
 
+export const getFileById = async (fileId) => {
+    const response = await FactoryService.request('FileService').getById(fileId)
+    return response.data
+}
+
+export const handleChooseFile = (fileId) => {
+    return async (dispatch) => {
+        try {
+            const foundFile = await getFileById(fileId)
+            dispatch({
+                type: types.CHOOSE_CURRENT_FILE,
+                currentFile: foundFile
+            })
+        } catch (error) {
+            console.log(error, 'error')
+        }
+
+    }
+}
+
 const pushCreatedFile = (file) => {
     return (dispatch) => {
         dispatch({
@@ -44,6 +64,61 @@ export const handleCreateTextFile = (name, description, content) => {
     }
 }
 
+export const handleUpdateTextFile = (name, description, content) => {
+    return async (dispatch, getState) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const currentFile = getState().file.currentFile
+                const file = {
+                    name, description, content
+                }
+                const response = await FactoryService.request('FileService').updateById(currentFile.id, file)
+                console.log(response, 'response')
+                const updatedFile = response.data
+                // dispatch(pushCreatedFile(createdFile))
+                resolve(true)
+            } catch (error) {
+                console.log(error, 'error')
+                reject(false)
+            }
+        })
+    }
+}
+
+
+export const handleUpdateImageFile = (name, description, images) => {
+    console.log(name, description, images, 'name, description, images')
+    return async (dispatch, getState) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const currentFile = getState().file.currentFile
+                let data = [
+                    { name: 'name', data: name },
+                    { name: 'description', data: description ? description : '' },
+                ]
+                let attachFileIds = []
+                for (let image of images) {
+                    if (image.id) {
+                        attachFileIds.push(image.id)
+                    } else {
+                        const fileName = image.path.split('/')[image.path.split('/').length - 1]
+                        data.push({ name: 'images', filename: fileName, type: image.mime, data: RNFetchBlob.wrap(image.path) })
+                    }
+                }
+                // for(){}
+                // data.unshift({ name: 'attachFileIds', data: attachFileIds })
+                // for (let file of attachFileIds) {
+                // }
+                const response = await FactoryService.request('FileService').updateImageFile(data, currentFile.id)
+                resolve(true)
+            } catch (error) {
+                console.log(error, 'error')
+                reject(false)
+            }
+        })
+    }
+}
+
 export const handleCreateImageFile = (name, description, images) => {
     return async (dispatch, getState) => {
         return new Promise(async (resolve, reject) => {
@@ -51,7 +126,7 @@ export const handleCreateImageFile = (name, description, images) => {
                 const parentFolder = getState().folder.parentFolder
                 let data = [
                     { name: 'name', data: name },
-                    { name: 'description', data: description },
+                    { name: 'description', data: description ? description : '' },
                     { name: 'folderId', data: parentFolder ? parentFolder.id : '' }
                 ]
                 for (let image of images) {

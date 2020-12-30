@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { handleCreateImageFile, handleChooseFile, handleUpdateImageFile } from '../store/action/file'
 // import * as ImagePicker from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
+import DocumentPicker from 'react-native-document-picker';
 let options = {
     title: 'Select Image',
     customButtons: [
@@ -21,65 +22,86 @@ let options = {
     },
 };
 
-export default function ImageFile({ navigation, route }) {
-    const [name, setName] = useState('Tên tệp tin')
-    const [description, setDescription] = useState()
-    const [images, setImages] = useState([])
-    const [isNew, setIsNew] = useState(true)
-    const [displayAsterisk, setDisplayAsterisk] = useState(false)
-    const dispatch = useDispatch()
-    const currentFile = useSelector(state => state.file.currentFile)
+export default function GeneralFile({ navigation, route }) {
+    // const [name, setName] = useState('Tên tệp tin')
+    // const [description, setDescription] = useState()
+    // const [images, setImages] = useState([])
+    // const [isNew, setIsNew] = useState(true)
+    // const [displayAsterisk, setDisplayAsterisk] = useState(false)
+    // const dispatch = useDispatch()
+    // const currentFile = useSelector(state => state.file.currentFile)
     const onHandleSaveFile = () => {
-        if (!name) return
-        if (isNew) {
-            dispatch(handleCreateImageFile(name, description, images)).then((result) => {
-                navigation.pop()
-            })
-        } else {
-            dispatch(handleUpdateImageFile(name, description, images)).then((result) => {
-                navigation.pop()
-            })
+        // if (!name) return
+        // if (isNew) {
+        //     dispatch(handleCreateImageFile(name, description, images)).then((result) => {
+        //         navigation.pop()
+        //     })
+        // } else {
+        //     dispatch(handleUpdateImageFile(name, description, images)).then((result) => {
+        //         navigation.pop()
+        //     })
+        // }
+    }
+
+    const openPickDocument = async () => {
+        try {
+            const res = await DocumentPicker.pick({
+                type: [DocumentPicker.types.images],
+            });
+            console.log(
+                res.uri,
+                res.type, // mime type
+                res.name,
+                res.size
+            );
+        } catch (err) {
+            console.log(err, 'error')
+            if (DocumentPicker.isCancel(err)) {
+                // User cancelled the picker, exit any dialogs or menus and move on
+            } else {
+                throw err;
+            }
         }
     }
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', async () => {
-            if (route.params?.fileId) {
-                await dispatch(handleChooseFile(route.params.fileId))
-                setIsNew(false)
-            }
-        });
-        return unsubscribe;
-    }, [navigation]);
+    // useEffect(() => {
+    //     const unsubscribe = navigation.addListener('focus', async () => {
+    //         if (route.params?.fileId) {
+    //             await dispatch(handleChooseFile(route.params.fileId))
+    //             setIsNew(false)
+    //         }
+    //     });
+    //     return unsubscribe;
+    // }, [navigation]);
 
-    useEffect(() => {
-        if (!isNew) {
-            if (currentFile) {
-                const { name, description, content, attachFileIds } = currentFile
-                console.log({ name, description })
-                setName(name)
-                setDescription(description)
-                setImages([...images, ...attachFileIds])
-            }
-        }
-    }, [isNew]);
-    const launchImageLibrary = () => {
-        ImagePicker.openPicker({
-            multiple: true
-        }).then(imagesFromLocal => {
-            console.log(imagesFromLocal, 'imagesFromLocal')
-            try {
-                setImages([...images, ...imagesFromLocal])
-            } catch (error) {
-                console.log(error)
-            }
-        });
-    }
-    const onHandleRemoveImage = (index) => {
-        const imagesNew = [...images]
-        imagesNew.splice(index, 1)
-        setImages(imagesNew)
-    }
+    // useEffect(() => {
+    //     if (!isNew) {
+    //         if (currentFile) {
+    //             const { name, description, content, attachFileIds } = currentFile
+    //             console.log({ name, description })
+    //             setName(name)
+    //             setDescription(description)
+    //             setImages([...images, ...attachFileIds])
+    //         }
+    //     }
+    // }, [isNew]);
+    // const launchImageLibrary = () => {
+    //     ImagePicker.openPicker({
+    //         multiple: true
+    //     }).then(imagesFromLocal => {
+    //         console.log(imagesFromLocal, 'imagesFromLocal')
+    //         try {
+    //             setImages([...images, ...imagesFromLocal])
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     });
+    // }
+    // const onHandleRemoveImage = (index) => {
+    //     const imagesNew = [...images]
+    //     imagesNew.splice(index, 1)
+    //     setImages(imagesNew)
+    // }
     return (
         <View style={{
             flex: 1
@@ -100,8 +122,8 @@ export default function ImageFile({ navigation, route }) {
                             fontSize: 18
                         }}
                         placeholder="Nhập tên tệp tin"
-                        onChangeText={(name) => setName(name)}
-                        value={name}
+                    // onChangeText={(name) => setName(name)}
+                    // value={name}
                     >
 
                     </TextInput>
@@ -129,16 +151,16 @@ export default function ImageFile({ navigation, route }) {
                         fontSize: 18,
                         marginBottom: 12
                     }}
-                    value={description}
+                    // value={description}
                     multiline
                     placeholder="Nhập thông tin mô tả"
-                    onChangeText={(description) => setDescription(description)}
+                // onChangeText={(description) => setDescription(description)}
                 >
 
                 </TextInput>
                 <Label style={{
                     fontSize: 18
-                }}>Hình ảnh</Label>
+                }}>Tệp tin</Label>
                 <TouchableOpacity style={{
                     backgroundColor: '#f57811',
                     width: 120,
@@ -149,7 +171,7 @@ export default function ImageFile({ navigation, route }) {
                     alignSelf: "center",
                     padding: 8
                 }}
-                    onPress={launchImageLibrary}
+                    onPress={() => openPickDocument}
                 >
                     <Entypo name="upload-to-cloud" color="#fff" size={25} />
                     <Text style={{
@@ -157,7 +179,7 @@ export default function ImageFile({ navigation, route }) {
                         color: '#fff'
                     }}>Tải Lên</Text>
                 </TouchableOpacity>
-                <View style={{
+                {/* <View style={{
                     flex: 1,
                     width: '100%',
                     marginTop: 10,
@@ -206,7 +228,7 @@ export default function ImageFile({ navigation, route }) {
                         }}
                         keyExtractor={item => item.id}
                     />
-                </View>
+                </View> */}
             </View>
         </View>
     )

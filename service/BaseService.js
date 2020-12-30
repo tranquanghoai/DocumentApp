@@ -1,7 +1,9 @@
 import axios from 'axios'
+import AsyncStorage from "@react-native-community/async-storage";
 
 const domain = 'http://192.168.1.11:3000/'
 import RNFetchBlob from 'rn-fetch-blob';
+import store from '../store'
 export default class BaseService {
     constructor(auth = 'employee') {
         if (auth) {
@@ -9,22 +11,23 @@ export default class BaseService {
         }
     }
 
-    setAuth(auth) {
-        axios.interceptors.request.use(function (config) {
+    async setAuth(auth) {
+        axios.interceptors.request.use(async (config) => {
             // const user = JSON.parse(localStorage.getItem(auth))
 
             // if (user) {
             // }
-
-            config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiI5NjVhMDUzNy02MWQ4LTRiMzAtYTExYS0yOTlhMzJjMWFhNGMiLCJpYXQiOjE2MDc5MTkxODMsImV4cCI6MTYxMDUxMTE4M30.s_Z52kOCqNLIKhxQotZO74YaxuzFEUfc64FK16jJtM0`
+            const accessToken = await AsyncStorage.getItem('accessToken')
+            config.headers.Authorization = `Bearer ${accessToken}`
             return config
         })
     }
 
     fetchBlob({ method, url, data }) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
+            const accessToken = await AsyncStorage.getItem('accessToken')
             const headers = {
-                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiI5NjVhMDUzNy02MWQ4LTRiMzAtYTExYS0yOTlhMzJjMWFhNGMiLCJpYXQiOjE2MDc5MTkxODMsImV4cCI6MTYxMDUxMTE4M30.s_Z52kOCqNLIKhxQotZO74YaxuzFEUfc64FK16jJtM0`
+                Authorization: `Bearer ${accessToken}`
             }
             RNFetchBlob.fetch(method, domain + url, headers, data).then(response => {
                 const status = response.info().status
@@ -34,6 +37,7 @@ export default class BaseService {
                 }
                 resolve(data)
             }).catch(error => {
+                console.log(error, 'erorr')
                 reject(error)
             })
         })
@@ -48,12 +52,12 @@ export default class BaseService {
     }
 
     async post(uri, params = {}) {
-        try {
-            return await axios.post(domain + uri, params)
-        } catch (e) {
-            console.log('xuong day khong')
-            return this.errorMsg(e)
-        }
+        // try {
+        return axios.post(domain + uri, params)
+        // } catch (e) {
+        //     console.log('xuong day khong')
+        //     return this.errorMsg(e)
+        // }
     }
 
     async put(uri, params = {}) {

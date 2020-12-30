@@ -12,6 +12,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import Home from '../screens/Home'
+import Login from '../screens/Login'
 import Setting from '../screens/Setting'
 import Shared from '../screens/Shared'
 import Document from '../screens/Document'
@@ -29,6 +30,7 @@ const HomeStack = createStackNavigator();
 function HomeStackTab() {
     return (
         <HomeStack.Navigator>
+            {/* <HomeStack.Screen name="Login" component={Login} options={{ headerShown: false }} /> */}
             <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <HomeStack.Screen name="DocumentList" component={DocumentList} options={{ headerShown: false }} />
         </HomeStack.Navigator>

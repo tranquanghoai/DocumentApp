@@ -1,15 +1,16 @@
-import * as types from '../action/types/file';
+import * as types from '../action/types/auth';
 
 const initialState = {
-    files: [],
-    currentFile: ''
+    accessToken: '',
+    refreshToken: '',
+    employee: null
 }
 
-export default folder = (state = initialState, action) => {
+export default auth = (state = initialState, action) => {
     switch (action.type) {
-        case types.SET_LIST_FILE:
-            const { files } = action
-            return { ...state, files: files }
+        case types.SET_AUTHENTICATION:
+            const { employee, accessToken, refreshToken } = action
+            return { ...state, employee, accessToken, refreshToken }
         case types.PUSH_CREATED_FILE:
             const { file } = action
             return { ...state, files: [...state.files, file] }

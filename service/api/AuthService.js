@@ -3,11 +3,17 @@ import RNFetchBlob from 'rn-fetch-blob';
 // import * as axios from 'axios'
 import $param from 'jquery-param';
 
-export default class FileService extends BaseService {
+export default class AuthService extends BaseService {
 	constructor(slug) {
 		super()
-		this.slug = 'file'
+		this.slug = 'employee'
 	}
+
+	async login(authentication = {}) {
+		const res = await this.post(this.slug + `/signin`, authentication)
+		return res.data
+	}
+
 	async getList(params = {}) {
 		try {
 			const res = await this.get(this.slug + `list-folder?${$param(params)}`)

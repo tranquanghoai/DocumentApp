@@ -7,10 +7,12 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import FactoryService from '../../service/FactoryService'
 import { useSelector, useDispatch } from "react-redux";
 import { getListFolder, chooseParentFolder } from '../../store/action/folder'
-
+import moment from 'moment';
 export default function FolderVertical({ navigation, folder }) {
     const dispatch = useDispatch()
-
+    const formatDate = (date) => {
+        return moment(date).format("DD-MM-YYYY")
+    }
     const onPressFolder = () => {
         navigation.push('DocumentList', {
             parentFolderId: folder.id
@@ -81,16 +83,16 @@ export default function FolderVertical({ navigation, folder }) {
                                 marginLeft: 8
                             }}>{folder.fileIds.length}</Text>
                         </View>
-                        <View style={{
+                        {/* <View style={{
                             flexDirection: 'row',
                             marginLeft: 16,
                             alignItems: "center"
                         }}>
-                            <AntDesign name="menu-fold" color="#fa9643" size={15} />
+                            <AntDesign name="calendar" color="#fa9643" size={15} />
                             <Text style={{
                                 marginLeft: 8
-                            }}>Thể thao</Text>
-                        </View>
+                            }}>{formatDate(folder.updatedAt)}</Text>
+                        </View> */}
                     </View>
                 </View>
                 <TouchableOpacity style={{

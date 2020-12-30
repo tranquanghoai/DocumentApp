@@ -12,7 +12,8 @@ export default function FolderHorizontal({ folders }) {
                     <View style={{
                         width: '50%',
                         flexDirection: "row",
-                        marginBottom: 16
+                        marginBottom: 16,
+                        // backgroundColor: 'red'
                     }}>
                         <View style={{
                             alignItems: "center",

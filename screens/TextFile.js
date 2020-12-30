@@ -1,5 +1,5 @@
 import { Body, Button, Header, Input, Item, Label, Left, Right, Title } from 'native-base';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -9,20 +9,51 @@ import { TextInput } from 'react-native-gesture-handler';
 import ModalAddFileInfo from '../components/modal/ModalAddFileInfo'
 import { useSelector, useDispatch } from "react-redux"
 import { openModalAddFileInfo } from '../store/action/system'
-import { handleCreateTextFile } from '../store/action/file'
+import { handleCreateTextFile, handleChooseFile, handleUpdateTextFile } from '../store/action/file'
 
-export default function TextFile({ navigation }) {
+export default function TextFile({ navigation, route }) {
     const [name, setName] = useState('Tên tệp tin')
-    const [description, setDescription] = useState()
-    const [content, setContent] = useState()
-
+    const [description, setDescription] = useState('')
+    const [content, setContent] = useState('')
+    const [isNew, setIsNew] = useState(true)
+    const currentFile = useSelector(state => state.file.currentFile)
     const [displayAsterisk, setDisplayAsterisk] = useState(false)
     const dispatch = useDispatch()
 
     const onHandleSaveFile = () => {
         if (!name) return
-        dispatch(handleCreateTextFile(name, description, content))
+        if (isNew) {
+            dispatch(handleCreateTextFile(name, description, content)).then((result) => {
+                navigation.pop()
+            })
+        } else {
+            dispatch(handleUpdateTextFile(name, description, content)).then((result) => {
+                navigation.pop()
+            })
+        }
     }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', async () => {
+            if (route.params?.fileId) {
+                await dispatch(handleChooseFile(route.params.fileId))
+                setIsNew(false)
+            }
+        });
+        return unsubscribe;
+    }, [navigation]);
+
+    useEffect(() => {
+        if (!isNew) {
+            if (currentFile) {
+                const { name, description, content } = currentFile
+                console.log({ name, description, content })
+                setName(name)
+                setDescription(description)
+                setContent(content)
+            }
+        }
+    }, [isNew]);
     return (
         <View style={{
             flex: 1
@@ -42,7 +73,6 @@ export default function TextFile({ navigation }) {
                         style={{
                             fontSize: 18
                         }}
-                        multiline
                         placeholder="Nhập tên tệp tin"
                         onChangeText={(name) => setName(name)}
                         value={name}
@@ -75,6 +105,7 @@ export default function TextFile({ navigation }) {
                     multiline
                     placeholder="Nhập thông tin mô tả"
                     onChangeText={(description) => setDescription(description)}
+                    value={description}
                 >
 
                 </TextInput>
@@ -89,8 +120,8 @@ export default function TextFile({ navigation }) {
                     placeholder="Nhập nội dung"
                     autoFocus={true}
                     onChangeText={(content) => setContent(content)}
-                    returnKeyType={"search"}
-                    returnKeyLabel="hoai">
+                    value={content}
+                >
 
                 </TextInput>
             </View>

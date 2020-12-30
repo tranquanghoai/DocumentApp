@@ -51,6 +51,11 @@ export default ModalAddDocument = ({ navigation }) => {
         dispatch(closeModalAddDocument())
         navigation.navigate('ImageFile')
     }
+
+    const onHandleCreateGeneralFile = () => {
+        dispatch(closeModalAddDocument())
+        navigation.navigate('GeneralFile')
+    }
     return (
         <Modal
             animationType="slide"
@@ -110,8 +115,11 @@ export default ModalAddDocument = ({ navigation }) => {
                             <CreateNewDoc name="Hình Ảnh" onHandlePress={onHandleCreateImageFile}>
                                 <Foundation name="photo" color="#f57811" size={20} />
                             </CreateNewDoc>
-                            <CreateNewDoc name="Tệp Tin">
+                            <CreateNewDoc name="Tệp Tin" onHandlePress={onHandleCreateGeneralFile}>
                                 <AntDesign name="upload" color="#f57811" size={20} />
+                            </CreateNewDoc>
+                            <CreateNewDoc name="Biểu mẫu">
+                                <AntDesign name="form" color="#f57811" size={20} />
                             </CreateNewDoc>
                         </View>
                     </View>

@@ -7,20 +7,35 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FactoryService from '../../service/FactoryService'
 import { useSelector, useDispatch } from "react-redux";
-import { getListFolder, chooseParentFolder } from '../../store/action/folder'
+import { handleChooseFile } from '../../store/action/file'
 import moment from 'moment';
 
 export default function FileVertical({ navigation, file }) {
     const dispatch = useDispatch()
+    const accessToken = useSelector(state => state.auth.accessToken)
     const formatDate = (date) => {
-        return moment(date).format("DD-MM-YYYY, h:mm")
+        return moment(date).format("DD-MM-YYYY")
+    }
+
+    const onHandlePress = () => {
+        // dispatch(handleChooseFile(file.id))
+        if (file.type === 'text') {
+            navigation.push('TextFile', {
+                fileId: file.id
+            })
+        } else if (file.type === 'image') {
+            navigation.push('ImageFile', {
+                fileId: file.id
+            })
+        }
+
     }
 
     return (
         <TouchableHighlight
             activeOpacity={0.6}
             underlayColor="#DDDDDD"
-            onPress={() => { }}
+            onPress={onHandlePress}
         >
             <View style={{
                 width: '100%',
@@ -38,20 +53,28 @@ export default function FileVertical({ navigation, file }) {
                                 style={{ flex: 1, width: '100%', padding: 4, justifyContent: "center", alignItems: "center" }}
                                 source={{
                                     uri: `http://192.168.1.11:3000/attach-file/${file.attachFileIds[0].id}`,
-                                    headers: { Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoiNWY4ODI1ZGNiYmY5MTEzZTA4MDU1Nzg3IiwiZGV2aWNlSWQiOiI5NjVhMDUzNy02MWQ4LTRiMzAtYTExYS0yOTlhMzJjMWFhNGMiLCJpYXQiOjE2MDc5MTkxODMsImV4cCI6MTYxMDUxMTE4M30.s_Z52kOCqNLIKhxQotZO74YaxuzFEUfc64FK16jJtM0" }
+                                    headers: { Authorization: `Bearer ${accessToken}` }
                                 }}
                             >
-                                {
+                                {/* {
                                     file.type === 'text' ? (<Entypo name="text" color="#ccc" size={50} />)
                                         : (<Entypo name="image" color="#ccc" size={50} />)
-                                }
+                                } */}
                             </ImageBackground>
                         </View>
                     ) : (
                             <View style={styles.folderIcon}>
                                 {
-                                    file.type === 'text' ? (<Entypo name="text" color="#ccc" size={50} />)
-                                        : (<Entypo name="image" color="#ccc" size={50} />)
+                                    file.type === 'text' && (
+                                        <View style={{
+                                            // backgroundColor: 'red',
+                                            padding: 4,
+                                            borderColor: '#ccc',
+                                            borderWidth: 1
+                                        }}>
+                                            <Entypo name="text" color="#ccc" size={50} />
+                                        </View>
+                                    )
                                 }
                             </View>
                         )
@@ -66,7 +89,7 @@ export default function FileVertical({ navigation, file }) {
                         fontSize: 16,
                         fontWeight: "bold",
                         marginBottom: 12
-                    }}>{file.name.length > 20 ? `${file.name.substring(0, 20)}...` : file.name}</Text>
+                    }}>{file.name?.length > 20 ? `${file.name.substring(0, 20)}...` : file.name}</Text>
                     <Text style={{
                         color: '#969490',
                         marginBottom: 4

@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
@@ -20,11 +20,11 @@ import {
   StatusBar,
   Button
 } from 'react-native';
-import { Provider } from 'react-redux';
-
+import { Provider, useDispatch, useSelector } from 'react-redux'
 import ModalCreateFolder from './components/modal/ModalCreateFolder'
 import TextFile from './screens/TextFile'
 import ImageFile from './screens/ImageFile'
+import GeneralFile from './screens/GeneralFile'
 
 import store from './store'
 
@@ -34,23 +34,37 @@ import TabNavigator from './navigation/TabNavigator'
 import DrawerNavigation from './navigation/DrawerNavigation'
 import ButtonAddDocument from './components/button/ButtonAddDocument'
 import ModalAddDocument from './components/modal/ModalAddDocument'
+import Login from './screens/Login'
+import { checkAutoLogin } from './store/action/auth'
 
 const StackHome = createStackNavigator();
-const StackHomeNavigator = () => {
+const StackHomeNavigator = ({ navigation }) => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(checkAutoLogin()).then((result) => {
+    }).catch((err) => {
+      try {
+        navigation.navigate('Login')
+      } catch (error) {
+        console.log(error, 'eror')
+      }
+    });
+  }, [])
   return (
     <StackHome.Navigator
       initialRouteName={'Home'}
       headerMode={'none'}
     >
+      <StackHome.Screen name="Login" component={Login} />
       <StackHome.Screen name="Home" component={TabNavigator} />
       <StackHome.Screen name="TextFile" component={TextFile} />
       <StackHome.Screen name="ImageFile" component={ImageFile} />
+      <StackHome.Screen name="GeneralFile" component={GeneralFile} />
     </StackHome.Navigator>
   )
 }
 
 const App = ({ navigation }) => {
-  console.log(navigation, 'navigation')
   return (
     <Provider store={store}>
       <NavigationContainer>

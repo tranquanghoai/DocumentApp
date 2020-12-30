@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import FolderVertical from '../components/folder/FolderVertical';
 import FolderHorizontal from '../components/folder/FolderHorizontal';
-// import FileHorizontal from '../components/file/FileHorizontal';
+import FileHorizontal from '../components/file/FileHorizontal';
 import FileVertical from '../components/file/FileVertical';
 import { getListFolder, chooseParentFolder } from '../store/action/folder'
 
@@ -69,10 +69,19 @@ export default DocumentList = ({ navigation, route }) => {
                 <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
                     <View style={styles.scrollViewWrapper}>
                         <View style={styles.titleArea}>
-                            <Text style={styles.titleText}>Thư Mục</Text>
+                            {
+                                folders && folders.length !== 0 ? (
+                                    <Text style={styles.titleText}>Thư Mục</Text>
+                                ) : (
+                                        <Text></Text>
+                                    )
+                            }
                             <TouchableOpacity onPress={() => {
                                 setFolderHorizontal(!folderIsHorizontal)
-                            }}>
+                            }}
+                                style={{
+                                    alignSelf: "flex-end"
+                                }}>
                                 {
                                     folderIsHorizontal ? (<Entypo name="menu" color="#000" size={24} />)
                                         :
@@ -93,13 +102,25 @@ export default DocumentList = ({ navigation, route }) => {
                                     </React.Fragment>
                                 )
                         }
-                        <React.Fragment>
-                            {
-                                files.map(file => (
-                                    <FileVertical navigation={navigation} key={file.id} file={file} />
-                                ))
-                            }
-                        </React.Fragment>
+                        {
+                            files && files.length !== 0 && (
+                                <Text style={styles.titleText}>Tệp Tin</Text>
+                            )
+                        }
+                        {
+                            folderIsHorizontal ? (
+                                <FileHorizontal files={files} />
+                            ) : (
+                                    <React.Fragment>
+                                        {
+                                            files.map(file => (
+                                                <FileVertical navigation={navigation} key={file.id} file={file} />
+                                            ))
+                                        }
+                                    </React.Fragment>
+                                )
+                        }
+
 
 
                     </View>
